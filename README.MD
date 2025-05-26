@@ -33,7 +33,7 @@ A simple command-line tool for scanning music libraries and identifying files wi
 
 3. **Run the validator**:
    ```bash
-   python music_validator.py /path/to/your/music/library
+   python rattlesnake.py /path/to/your/music/library
    ```
 
 ## 📖 Usage
@@ -42,27 +42,27 @@ A simple command-line tool for scanning music libraries and identifying files wi
 
 **Scan a music directory:**
 ```bash
-python music_validator.py "C:\Users\YourName\Music"
+python rattlesnake.py "C:\Users\YourName\Music"
 ```
 
 **Save report to file:**
 ```bash
-python music_validator.py "C:\Users\YourName\Music" --output validation_report.txt
+python rattlesnake.py "C:\Users\YourName\Music" --output validation_report.txt
 ```
 
 **Generate JSON report:**
 ```bash
-python music_validator.py "C:\Users\YourName\Music" --format json --output report.json
+python rattlesnake.py "C:\Users\YourName\Music" --format json --output report.json
 ```
 
 **Scan only current directory (no subdirectories):**
 ```bash
-python music_validator.py "C:\Users\YourName\Music" --no-recursive
+python rattlesnake.py "C:\Users\YourName\Music" --no-recursive
 ```
 
 **Quiet mode (minimal console output):**
 ```bash
-python music_validator.py "C:\Users\YourName\Music" --quiet --output report.txt
+python rattlesnake.py "C:\Users\YourName\Music" --quiet --output report.txt
 ```
 
 ### Command-Line Options
@@ -75,6 +75,7 @@ python music_validator.py "C:\Users\YourName\Music" --quiet --output report.txt
 | `--format` | `-f` | Output format: `text` or `json` (default: text) |
 | `--quiet` | `-q` | Suppress progress messages |
 | `--help` | `-h` | Show help message |
+| `--condensed` | `-c` | include only files missing artwork metadata |
 
 ## 📊 What Gets Validated
 
@@ -151,7 +152,7 @@ Track Number: 31 files
 **Use with music taggers:**
 ```bash
 # Generate JSON report for programmatic processing
-python music_validator.py /music/library --format json --output issues.json
+python rattlesnake.py /music/library --format json --output issues.json
 
 # Process the JSON with other tools
 jq '.files[] | select(.missing_metadata | length > 0)' issues.json
@@ -161,7 +162,7 @@ jq '.files[] | select(.missing_metadata | length > 0)' issues.json
 ```bash
 # Windows batch file example
 for /d %%i in ("C:\Music\*") do (
-    python music_validator.py "%%i" --output "reports\%%~ni_report.txt"
+    python rattlesnake.py "%%i" --output "reports\%%~ni_report.txt"
 )
 ```
 
@@ -190,7 +191,7 @@ print(f"Files missing only artwork: {len(artwork_only)}")
 ### Project Structure
 ```
 music-metadata-validator/
-├── music_validator.py      # Main application
+├── rattlesnake.py      # Main application
 ├── README.md              # This file
 ├── requirements.txt       # Python dependencies
 ├── examples/             # Example reports and scripts
@@ -209,8 +210,8 @@ music-metadata-validator/
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/music-metadata-validator.git
-cd music-metadata-validator
+git clone https://github.com/ammianus/RattlesnakeMusic.git
+cd RattlesnakeMusic
 
 # Create virtual environment
 python -m venv venv
@@ -219,8 +220,6 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install mutagen
 
-# Run tests (when available)
-python -m pytest tests/
 ```
 
 ## 📋 Requirements
@@ -271,11 +270,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🏷️ Version History
 
 - **v1.0.0** - Initial release with MP3/MP4 support
-- **v1.1.0** - Added JSON output format and improved error handling
-- **v1.2.0** - Enhanced Windows compatibility and path handling
 
 ---
 
 **Star this repo if you find it useful!** 🌟
 
-For questions, issues, or feature requests, please [open an issue](https://github.com/yourusername/music-metadata-validator/issues).
+For questions, issues, or feature requests, please [open an issue](https://github.com/ammianus/RattlesnakeMusic/issues).

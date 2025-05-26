@@ -161,10 +161,12 @@ class MusicValidator:
         track = audio_file.tags.get('trkn')  # Track number
         result.missing_track_number = not (track and track[0][0] > 0 if track else False)
     
-    def generate_report(self, output_format: str = 'text') -> str:
+    def generate_report(self, output_format: str = 'text', condensed: bool = False) -> str:
         """Generate validation report in specified format."""
         if output_format.lower() == 'json':
             return self._generate_json_report()
+        elif condensed:
+            return self._generate_condensed_report()
         else:
             return self._generate_text_report()
     
@@ -248,6 +250,21 @@ class MusicValidator:
                 report_data['files'].append(file_data)
         
         return json.dumps(report_data, indent=2)
+    
+    def _generate_condensed_report(self) -> str:
+        """Generate condensed text report showing only files missing album art."""
+        files_missing_art = [r for r in self.results if r.missing_album_art and not r.error_message]
+        
+        report_lines = []
+        
+        # Add each file missing artwork on its own line
+        for result in files_missing_art:
+            report_lines.append(result.filepath)
+        
+        # Add total count at the end
+        report_lines.append(f"Total files missing album artwork: {len(files_missing_art)}")
+        
+        return "\n".join(report_lines)
 
 
 def main():
@@ -290,6 +307,12 @@ def main():
     )
     
     parser.add_argument(
+        '--condensed', '-c',
+        action='store_true',
+        help='Generate condensed report showing only files missing album artwork (one file per line)'
+    )
+    
+    parser.add_argument(
         '--quiet', '-q',
         action='store_true',
         help='Suppress progress messages'
@@ -315,7 +338,7 @@ def main():
             print(f"Scanned {len(validator.results)} files")
         
         # Generate report
-        report = validator.generate_report(args.format)
+        report = validator.generate_report(args.format, condensed=args.condensed)
         
         # Output report
         if args.output:
@@ -325,6 +348,11 @@ def main():
             
             if not args.quiet:
                 print(f"Report saved to: {output_path}")
+                
+                # Print count summary for condensed reports
+                if args.condensed:
+                    missing_art_count = sum(1 for r in validator.results if r.missing_album_art and not r.error_message)
+                    print(f"Files missing album artwork: {missing_art_count}")
         else:
             print(report)
     
