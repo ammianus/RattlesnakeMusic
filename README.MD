@@ -1,4 +1,7 @@
-# Music Library Metadata Validator
+# Rattlesnake 
+## Music Library Metadata Validator
+
+![Rattlesnake Logo Art](https://raw.githubusercontent.com/ammianus/RattlesnakeMusic/main/assets/rattlesnake2.png)
 
 A simple command-line tool for scanning music libraries and identifying files with missing or incomplete metadata. Perfect for organizing large music collections and ensuring consistent metadata across your library.
 
@@ -190,12 +193,13 @@ print(f"Files missing only artwork: {len(artwork_only)}")
 
 ### Project Structure
 ```
-music-metadata-validator/
+RattlesnakeMusic/
 ├── rattlesnake.py      # Main application
 ├── README.md              # This file
 ├── requirements.txt       # Python dependencies
 ├── examples/             # Example reports and scripts
 └── tests/               # Unit tests (coming soon)
+└── assets/               # misc assets and art
 ```
 
 ### Contributing
